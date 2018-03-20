@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"></meta>
+<title>物业管理平台</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+
+	<button onclick="loginOut()">退出登陆</button>
+	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript">
+		function loginOut() {
+			window.location.href = "/page/logout";
+		}
+	</script>
+</body>
+</html>

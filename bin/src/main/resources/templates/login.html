@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"></meta>
+<title>管理员登陆</title>
+<style type="text/css">
+body {
+	text-align: center
+}
+
+.div_root {
+	margin: 0 auto;
+	width: 30%;
+	height: 40%;
+	border: 1px solid #000000;
+	background-color: #FFFFFF
+}
+
+.h1_top {
+	margin-top: 10%;
+}
+
+#lb_tip {
+	color: #FF0000;
+}
+</style>
+</head>
+<body>
+	<h1 class="h1_top">物业管理平台登陆</h1>
+	<div class="div_root">
+		<div>
+			用户名<input id="inp_name" type="text" placeholder="请输入用户名" />
+		</div>
+		<div>
+			密码<input id="inp_pwd" type="password" placeholder="请输入密码" />
+		</div>
+		<button onclick="login()">登陆</button>
+		<div>
+			<label id="lb_tip"></label>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript">
+		function login() {
+			var name = $("#inp_name").val();
+			var pwd = $("#inp_pwd").val();
+			name = $.trim(name);
+			if (name == '') {
+				alert("请输入用户名");
+				return false;
+			}
+			;
+			pwd = $.trim(pwd);
+			if (pwd == '') {
+				alert("请输入密码");
+				return false;
+			}
+			;
+			$.ajax({
+				url : "/user/login",
+				type : "POST",
+				datatype : "JSON",
+				contentType : "application/json;charset=utf-8",
+				data : '{"adminCode" : "' + name + '","pwd" :"' + pwd + '" }',
+				success : function(obj) {
+					if (obj.code == 0) {
+						alert(obj.message);
+						window.location.href = "/page/";
+					} else {
+						$("#lb_tip").html(obj.message)
+					}
+				},
+				error : function() {
+					alert("提交失败！");
+				}
+			});
+		}
+	</script>
+</body>
+</html>
