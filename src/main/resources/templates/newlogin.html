@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8"></meta>
+<title th:text="${title}"></title>
+<!-- Bootstrap -->
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"
+	media="screen" />
+<link th:href="@{/css/bootstrap-responsive.min.css}" rel="stylesheet"
+	media="screen" />
+<link th:href="@{/css/styles.css}" rel="stylesheet" media="screen" />
+</head>
+
+<body id="login">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<a class="brand" th:text="${title}"></a>
+				<div class="nav-collapse collapse">
+					<ul class="nav pull-right">
+						<li class="dropdown"><a href="#" role="button"
+							class="dropdown-toggle" data-toggle="dropdown"> <i
+								class="icon-user"></i>未登录<i class="caret"></i>
+						</a>
+							<ul class="dropdown-menu">
+								<li class="divider"></li>
+								<li><a tabindex="-1" href="login.html">退出登录</a></li>
+							</ul></li>
+					</ul>
+					<ul class="nav">
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<div class="container" style="margin-top: 70px">
+		
+		<form class="form-signin">
+			<h2 class="form-signin-heading">管理员登陆</h2>
+			<input id="ipt_0" type="text" class="input-block-level"
+				placeholder="用户名" /> <input type="password" id="ipt_1"
+				class="input-block-level" placeholder="密&nbsp;&nbsp;&nbsp;&nbsp;码" />
+			<button onclick="return btn_ok()" class="btn btn-large btn-primary"
+				>登&nbsp;&nbsp;&nbsp;&nbsp;陆</button>
+		</form>
+
+	</div>
+	<!-- /container -->
+	<script th:src="@{/js/jquery-1.9.1.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+		function btn_ok() {
+			var ipt_0 = $("#ipt_0").val();
+			var ipt_1 = $("#ipt_1").val();
+			ipt_0 = $.trim(ipt_0);
+			if (ipt_0 == '') {
+				alert("请输入用户名");
+				return false;
+			}
+			;
+			ipt_1 = $.trim(ipt_1);
+			if (ipt_1 == '') {
+				alert("请输入密码");
+				return false;
+			}
+			$.ajax({
+				url : "/dologin",
+				type : "POST",
+				datatype : "JSON",
+				contentType : "application/json;charset=utf-8",
+				data : '{"userName" : "' + ipt_0 + '","pwd" :"' + ipt_1
+						+ '" }',
+				success : function(obj) {
+					if (obj.code == 0) {
+						alert(obj.message);
+						window.location.href = "/";
+					} else {
+						alert(obj.message);
+					}
+				},
+				error : function() {
+					alert("提交失败！");
+				}
+			});
+			return false;
+		}
+	</script>
+</body>
+
+</html>

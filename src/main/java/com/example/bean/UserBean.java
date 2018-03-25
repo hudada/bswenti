@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 //用户信息表
 @Entity
 public class UserBean {
@@ -14,78 +15,63 @@ public class UserBean {
 	private Long id;
 	// 账号
 	@Column(unique = true)
-	private String number;
-	private String name;
-	private String tel;
+	private String userName;
+	private String pwd;
 	private int sex;
-	private String Dong;
-	private String Dan;
-	private String Hao;
-	public String getDong() {
-		return Dong;
+	private int age;
+	private int team;  //0=技术部，1=销售部，2=人事部
+	private int lid;  //0=员工，1=经理
+	@Transient
+	private Double score;
+	
+	public Long getId() {
+		return id;
 	}
-
-	public void setDong(String dong) {
-		Dong = dong;
+	public void setId(Long id) {
+		this.id = id;
 	}
-
-	public String getDan() {
-		return Dan;
+	public String getUserName() {
+		return userName;
 	}
-
-	public void setDan(String dan) {
-		Dan = dan;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-
-	public String getHao() {
-		return Hao;
+	public String getPwd() {
+		return pwd;
 	}
-
-	public void setHao(String hao) {
-		Hao = hao;
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
-
-	// 钱包余额
-	private double balance;
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public int getSex() {
 		return sex;
 	}
-
 	public void setSex(int sex) {
 		this.sex = sex;
 	}
-
-	public double getBalance() {
-		return balance;
+	public int getAge() {
+		return age;
 	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public int getTeam() {
+		return team;
+	}
+	public void setTeam(int team) {
+		this.team = team;
+	}
+	public int getLid() {
+		return lid;
+	}
+	public void setLid(int lid) {
+		this.lid = lid;
+	}
+	public Double getScore() {
+		return score;
+	}
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 }

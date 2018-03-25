@@ -12,21 +12,23 @@ public class AdminBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
-	private String adminCode;
+	private String userName;
 	private String pwd;
-
-	public String getAdminCode() {
-		return adminCode;
+	public Long getId() {
+		return id;
 	}
-
-	public void setAdminCode(String adminCode) {
-		this.adminCode = adminCode;
+	public void setId(Long id) {
+		this.id = id;
 	}
-
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getPwd() {
 		return pwd;
 	}
-
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+   		<meta charset="utf-8"></meta>
+        <title th:text="${title}"></title>
+        <!-- Bootstrap -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/bootstrap-responsive.min.css}" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/styles.css}" rel="stylesheet" media="screen"/>
+    </head>
+    
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" th:text="${title}"></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a th:inline="text" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+                                <i class="icon-user"></i>你好，[[${name}]]<i class="caret"></i>
+
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="/logout">退出登录</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3" id="sidebar">
+                    <ul id="ul_left" class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                    	
+                    </ul>
+                </div>
+            </div>
+            <hr/>
+        </div>
+        <!--/.fluid-container-->
+        <script th:src="@{/js/jquery-1.9.1.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:inline="javascript">
+        $(document).ready(function() {
+        	$("#ul_left").html([[${left}]])
+		});
+        </script>
+    </body>
+
+</html>

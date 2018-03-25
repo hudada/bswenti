@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.example.bean.AccountBean;
 import com.example.bean.AdminBean;
 import com.example.bean.BaseBean;
 import com.example.bean.UserBean;
-import com.example.dao.AccountDao;
 import com.example.dao.AdminDao;
 import com.example.dao.UserDao;
 import com.example.utils.ResultUtils;
@@ -38,69 +38,36 @@ import com.example.WebSecurityConfig;
 public class PageUserController {
 
 	@Autowired
-	private UserDao userDao;
-	@Autowired
-	private AccountDao accountDao;
-	private int size = 50;
+	private UserDao userDao;	
 
-	@RequestMapping(value = "/table/{page}", method = RequestMethod.GET)
-	public String table(@PathVariable int page,ModelMap map) {
-		Pageable p = new PageRequest(page, size);
-		map.addAttribute("list", userDao.findAll(p));
-		map.addAttribute("page", page);
-		map.addAttribute("sum", 1);
-		return "user/table";
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String addPage() {
-		return "user/add";
-	}
-	
-	@RequestMapping(value = "/edit/{number}", method = RequestMethod.GET)
-	public String editPage(@PathVariable String number,ModelMap map) {
-		map.addAttribute("userBean", userDao.findUserByNumber(number));
-		return "user/edit";
-	}
-
-	// 添加用户
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public BaseBean<UserBean> addUser(@RequestBody UserBean userBean) {
-		if (accountDao.findAccountByNumber(userBean.getNumber()) == null) {
-			AccountBean accountBean = new AccountBean();
-			accountBean.setNumber(userBean.getNumber());
-			accountBean.setPwd("111111");
-			AccountBean save = accountDao.save(accountBean);
+	public BaseBean<UserBean> add(@RequestBody UserBean userBean) {
+		UserBean bean = userDao.findByName(userBean.getUserName());
+		if (bean == null) {
 			return ResultUtils.resultSucceed(userDao.save(userBean));
-		} else {
-			return ResultUtils.resultError("用户名已存在");
+		}else {
+			return ResultUtils.resultError("当前账号已存在");
 		}
 	}
-
-	// 修改用户
-	@RequestMapping(value = "/edit/{number}", method = RequestMethod.POST, produces = "application/json")
+	
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public BaseBean<UserBean> editUser(@PathVariable String number,@RequestBody UserBean userBean) {
-		UserBean user = userDao.findUserByNumber(number);
-		user.setName(userBean.getName());
-		user.setSex(userBean.getSex());
-		user.setTel(userBean.getTel());
-		user.setBalance(userBean.getBalance());
-		user.setDong(userBean.getDong());
-		user.setDan(userBean.getDan());
-		user.setHao(userBean.getHao());
-		return ResultUtils.resultSucceed(userDao.save(user));
+	public BaseBean<UserBean> edit(@PathVariable String id,@RequestBody UserBean userBean) {
+		UserBean bean = userDao.findOne(Long.parseLong(id));
+		if (!bean.getUserName().equals(userBean.getUserName()) && 
+				userDao.findByName(userBean.getUserName()) != null) {
+			return ResultUtils.resultError("当前账号已存在");
+		}else {
+			userBean.setId(Long.parseLong(id));
+			return ResultUtils.resultSucceed(userDao.save(userBean));
+		}
 	}
-
-	// 删除用户
-	@RequestMapping(value = "/detele/{number}", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/detele/{id}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public BaseBean<UserBean> delUser(@PathVariable String number) {
-		AccountBean a = accountDao.findAccountByNumber(number);
-		accountDao.delete(a);
-		UserBean user = userDao.findUserByNumber(number);
-		userDao.delete(user);
+	public BaseBean<UserBean> detele(@PathVariable String id) {
+		userDao.delete(Long.parseLong(id));
 		return ResultUtils.resultSucceed("");
 	}
 }
