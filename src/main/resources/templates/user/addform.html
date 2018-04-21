@@ -63,8 +63,8 @@
 											<label class="control-label" for="focusedInput">账号</label>
 											<div class="controls">
 												<div>
-													<input id="ipt_1" 
-														class="input-xlarge focused" type="text" placeholder="账号" />
+													<input id="ipt_number" 
+														class="input-xlarge focused" type="text" placeholder="请输入账号" />
 												</div>
 											</div>
 										</div>
@@ -72,8 +72,8 @@
 											<label class="control-label" for="focusedInput">密码</label>
 											<div class="controls">
 												<div>
-													<input id="ipt_2" 
-														class="input-xlarge focused" type="text" placeholder="密码" />
+													<input id="ipt_name" 
+														class="input-xlarge focused" type="text" placeholder="请输入昵称" />
 												</div>
 											</div>
 										</div>
@@ -81,45 +81,46 @@
 										<div class="control-group">
 											<label class="control-label" for="focusedInput">性别</label>
 											<div class="controls">
-												<select id="ipt_3" class="span6 m-wrap">
-													<option name="sex" checked="checked" value="1">男</option>
-													<option name="sex" value="0">女</option>
-												</select>
+												<input id="ipt_tel" 
+														class="input-xlarge focused" type="text" placeholder="请输入电话" />
 											</div>
 										</div>
 										
 										<div class="control-group">
 											<label class="control-label" for="focusedInput">年龄</label>
 											<div class="controls">
-												<div>
-													<input id="ipt_4" 
-														class="input-xlarge focused" type="text" placeholder="年龄" />
-												</div>
+												<select class="span6 m-wrap">
+													<option name="sex" checked="checked" value="1">男</option>
+													<option name="sex" value="0">女</option>
+												</select>
 											</div>
 										</div>
 
 										<div class="control-group">
 											<label class="control-label" for="focusedInput">部门</label>
 											<div class="controls">
-												<select id="ipt_5" class="span6 m-wrap">
-													<option name="team" checked="checked" value="0">技术部</option>
-													<option name="team" value="1">销售部</option>
-													<option name="team" value="2">人事部</option>
-												</select>
+												<input id="ipt_dong" 
+														class="input-xlarge focused" type="text" placeholder="请输入栋数" />
 											</div>
 										</div>
 										
 										<div class="control-group">
 											<label class="control-label" for="focusedInput">权限</label>
 											<div class="controls">
-												<select id="ipt_6" class="span6 m-wrap">
-													<option name="limit" checked="checked" value="0">员工</option>
-													<option name="limit" value="1">经理</option>
-												</select>
+												<input id="ipt_dan" 
+														class="input-xlarge focused" type="text" placeholder="请输入单元" />
 											</div>
 										</div>
 										
 
+										<div class="control-group">
+											<label class="control-label" for="focusedInput">权限</label>
+											<div class="controls">
+												<input id="ipt_hao" 
+														class="input-xlarge focused" type="text" placeholder="请输入门牌号" />
+											</div>
+										</div>
+										
 
 										<div class="form-actions">
 											<button onclick="btn_cancel()" type="button" class="btn">取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
@@ -210,30 +211,26 @@
 		
 
 		function btn_cancel() {
-			window.location.href = "/userManager";
+			window.location.href = "/page/user/table/0";
 		}
 
 		function btn_ok() {
-			var ipt_1 = $("#ipt_1").val();
-			var ipt_2 = $("#ipt_2").val();
-			var ipt_3 = $("option[name='sex']:checked").val();
-			var ipt_4 = $("#ipt_4").val();
-			var ipt_5 = $("option[name='team']:checked").val();
-			var ipt_6 = $("option[name='limit']:checked").val();
-
-			ipt_1 = $.trim(ipt_1);
-			ipt_2 = $.trim(ipt_2);
-			ipt_4 = $.trim(ipt_4);
-			
-			if (ipt_1 == "" || ipt_2 == "" || ipt_4 == "") {
-				alert("请输入完整信息")
+			var number = $("#ipt_number").val();
+			var name = $("#ipt_name").val();
+			var tel = $("#ipt_tel").val();
+			var sex = $("input[name='sex']:checked").val();
+			var dong = $("#ipt_dong").val();
+			var dan = $("#ipt_dan").val();
+			var hao = $("#ipt_hao").val();
+			number = $.trim(number);
+			if (number == "") {
+				alert("用户名不能为空")
 				return;
 			}
 			
-			var data = '{"userName" : "' + ipt_1 + '","pwd":"' + ipt_2 + '","sex":"' + ipt_3 + '","age":"'
-				+ ipt_4 + '","team":"'
-				+ ipt_5 + '","lid":"' + ipt_6 + '" }';
-				
+			var data = '{"number" : "' + number + '","name":"'+name+'","tel" :"' + tel
+				+ '","sex" :"' + sex + '","dong" :"' + dong
+				+ '","dan" :"' + dan + '","hao" :"' + hao + '" }';
 			$.ajax({
 				url : "/page/user/add",
 				type : "POST",
@@ -242,11 +239,9 @@
 				data : data,
 				success : function(obj) {
 					if (obj.code == 0) {
-						window.location.href = "/userManager";
-						return false;
+						btn_cancel();
 					} else {
 						alert(obj.message);
-						return false;
 					}
 				},
 				error : function() {
